@@ -13,7 +13,7 @@ const links = [
         href: "/projects"
     },
     {
-        name:"Galeria",
+        name:"Galería",
         href: "/gallery"
     },
     {
@@ -26,9 +26,15 @@ const links = [
 
 
 <nav class="header__nav">
-  {links.map(link => (
-    <a href={link.href}>
+  {links.map(link => {
+    if (link.name === "Comunidad"){
+        return (<a href={link.href} class="header__nav__link-alt">
       {link.name}
-    </a>
-  ))}
+    </a>)
+    }
+
+    return (<a href={link.href} class="header__nav__link">
+      {link.name}
+    </a>)
+  })}
 </nav>
