@@ -1,0 +1,34 @@
+---
+const links = [
+    {
+        name: "Inicio",
+        href: "/"
+    },
+    {
+        name: "Eventos",
+        href: "/events"
+    },
+    {
+        name: "Proyectos",
+        href: "/projects"
+    },
+    {
+        name:"Galeria",
+        href: "/gallery"
+    },
+    {
+        name: "Comunidad",
+        href: "/community"
+    }
+    //this should be modified according to the pages that are created in the project.
+]
+---
+
+
+<nav class="header__nav">
+  {links.map(link => (
+    <a href={link.href}>
+      {link.name}
+    </a>
+  ))}
+</nav>
