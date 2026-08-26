@@ -1,0 +1,5 @@
+#!/bin/bash
+_scripts_dir="$(cd "$(dirname "$0")/../../" && pwd)"
+if [ -f "$_scripts_dir/scripts/validate-env.py" ]; then
+ python "$_scripts_dir/scripts/validate-env.py" &
+fi

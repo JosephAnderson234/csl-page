@@ -1,0 +1,46 @@
+---
+const events = [
+	{
+		title: "Taller de Introducción a Ciberseguridad",
+		date: "15 Sep 2026",
+		time: "18:00 - 20:00",
+		location: "Auditorio Principal",
+		description: "Aprende los fundamentos de seguridad informática y herramientas básicas del sector.",
+		tag: "Taller"
+	},
+	{
+		title: "CTF Interuniversitario",
+		date: "22 Sep 2026",
+		time: "09:00 - 18:00",
+		location: "Lab de Redes",
+		description: "Competencia de Capture The Flag entre universidades de la región.",
+		tag: "Competencia"
+	},
+	{
+		title: "Conferencia: Estado del Arte en Malware",
+		date: "06 Oct 2026",
+		time: "17:00 - 19:00",
+		location: "Sala de Conferencias B",
+		description: "Análisis de las tendencias actuales en amenazas digitales y técnicas de evasión.",
+		tag: "Conferencia"
+	}
+];
+---
+
+<section class="section_events">
+	<h2 class="section_events__title">Próximos Eventos</h2>
+	<div class="section_events__grid">
+		{events.map((event) => (
+			<div class="section_events__card">
+				<span class="section_events__card__tag">{event.tag}</span>
+				<h3 class="section_events__card__title">{event.title}</h3>
+				<p class="section_events__card__desc">{event.description}</p>
+				<div class="section_events__card__meta">
+					<span>{event.date}</span>
+					<span>{event.time}</span>
+					<span>{event.location}</span>
+				</div>
+			</div>
+		))}
+	</div>
+</section>
