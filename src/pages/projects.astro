@@ -1,0 +1,111 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { AWESOME_REPO, ORG } from "../lib/github";
+
+// proyectos de miembros (awesome-utec) y repos del club (GitHub), ver src/lib/github.ts
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+const repos = (await getCollection("repos")).sort((a, b) => b.data.pushedAt.valueOf() - a.data.pushedAt.valueOf());
+
+// el servidor compartido aún no está abierto; detalles en la propuesta del club
+const vpsRepo = repos.find((repo) => repo.id === "vps-ansible-setup");
+const vpsSpecs = [
+	["ram", "2 GiB"],
+	["cpu", "hasta 2 núcleos compartidos"],
+	["disco", "15 GiB"],
+	["acceso", "SSH con clave y sudo"],
+	["web", "organizacion.csl-club.org con HTTPS"],
+	["sistema", "Ubuntu 24.04 + Docker Compose"],
+];
+
+const fmt = (date: Date) =>
+	date.toLocaleDateString("es-PE", { timeZone: "UTC", day: "2-digit", month: "short", year: "numeric" });
+---
+
+<Layout title="Proyectos · CSL Club">
+	<section class="log work">
+		<div class="log__intro">
+			<p class="log__prompt">csl@utec:~/proyectos$ ls</p>
+			<h1 class="log__heading">Proyectos</h1>
+			<p class="log__lead">
+				Lo que construyen nuestros miembros y lo que mantenemos como club. Todo es código libre.
+			</p>
+		</div>
+
+		<div class="work__block">
+			<p class="log__prompt">csl@utec:~/proyectos$ cat miembros.yml</p>
+
+			<ul class="work__grid">
+				{projects.map((project) => (
+					<li class="work__card">
+						<div class="work__card__header">
+							<a class="work__name" href={project.data.url}>{project.data.name}</a>
+							{project.data.stars !== undefined && <span class="work__stars">★ {project.data.stars}</span>}
+						</div>
+						<p class="work__authors">{project.data.authors.join(", ")}</p>
+						<p class="work__summary">{project.data.summary}</p>
+						<p class="work__tags">
+							{project.data.lang && <span class="work__lang">{project.data.lang}</span>}
+							{project.data.tags.map((tag) => <span>#{tag}</span>)}
+						</p>
+					</li>
+				))}
+			</ul>
+
+			<p class="work__note">
+				¿Tienes un proyecto? Agrégalo con un PR a{" "}
+				<a href={`https://github.com/${AWESOME_REPO}`}>{AWESOME_REPO}</a>.
+			</p>
+		</div>
+
+		<div class="work__block">
+			<p class="log__prompt">csl@utec:~/proyectos$ cat club/servidor.md</p>
+
+			<article class="work__vps">
+				<div class="work__card__header">
+					<h2 class="work__name">Servidor compartido</h2>
+					<span class="work__soon">próximamente</span>
+				</div>
+				<p class="work__summary">
+					Un espacio propio en el servidor del club para organizaciones estudiantiles de UTEC:
+					su web, un bot o el sistema de inscripción de un evento, sin depender de servicios
+					gratuitos limitados ni de tarjetas internacionales. Cada espacio es un contenedor
+					aislado al que se entra por SSH y donde se despliega con Docker.
+				</p>
+				<dl class="log__meta">
+					{vpsSpecs.map(([key, value]) => (
+						<>
+							<dt>{key}</dt>
+							<dd>{value}</dd>
+						</>
+					))}
+				</dl>
+				<p class="work__summary work__muted">
+					Arrancamos con tres espacios y un costo mínimo, solo para cubrir el mantenimiento del servidor.
+					Si tu organización está interesada, escríbenos a <a href="mailto:csl@utec.edu.pe">csl@utec.edu.pe</a>.
+				</p>
+				{vpsRepo && <a class="log__link" href={vpsRepo.data.url}>ver {vpsRepo.data.name} →</a>}
+			</article>
+		</div>
+
+		<div class="work__block">
+			<p class="log__prompt">csl@utec:~/proyectos$ ls -l ~/{ORG}</p>
+
+			<ul class="work__repos">
+				{repos.map((repo) => (
+					<li class="work__repo">
+						<a class="work__repo__name" href={repo.data.url}>{repo.data.name}/</a>
+						<span class="work__repo__lang">{repo.data.lang ?? "-"}</span>
+						<span class="work__repo__stars">★ {repo.data.stars}</span>
+						<span class="work__repo__date">{fmt(repo.data.pushedAt)}</span>
+						{repo.data.description && <span class="work__repo__desc">{repo.data.description}</span>}
+					</li>
+				))}
+			</ul>
+		</div>
+
+		<p class="log__prompt log__prompt--end">
+			csl@utec:~/proyectos$ <span class="projects__cursor"></span>
+		</p>
+	</section>
+</Layout>

@@ -321,6 +321,16 @@ img{
     font-weight: 500;
 }
 
+.projects__item__name{
+    color: inherit;
+    text-decoration: none;
+}
+
+.projects__item__name:hover{
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
 .projects__item__author{
     color: var(--author);
     text-align: right;
@@ -653,6 +663,135 @@ img{
     outline-offset: 2px;
 }
 
+/* ---------- proyectos (usa la misma paleta que .log) ---------- */
+
+.work__block{
+    max-width: 1100px;
+    margin: clamp(40px, 4vw, 72px) auto 0;
+}
+
+.work a{
+    color: inherit;
+    text-underline-offset: 0.2em;
+}
+
+.work__grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    margin-top: 1em;
+    list-style: none;
+}
+
+.work__card,
+.work__vps{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    padding: 1.2em 1.3em;
+    border: 1px solid var(--log-line);
+    border-radius: 6px;
+}
+
+.work__card:hover{
+    border-color: var(--log-muted);
+}
+
+.work__card__header{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+.work__name{
+    font-size: inherit;
+    font-weight: 400;
+    color: var(--text-primary);
+}
+
+.work .work__name{
+    color: var(--text-primary);
+}
+
+.work__stars,
+.work__authors,
+.work__muted{
+    color: var(--log-muted);
+}
+
+.work__summary{
+    max-width: 70ch;
+    line-height: 1.5;
+}
+
+.work__tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em 0.9em;
+    margin-top: auto;
+    color: var(--log-hash);
+    font-size: 0.85em;
+}
+
+.work__lang{
+    color: var(--log-accent);
+}
+
+.work__note{
+    margin-top: 1.2em;
+    color: var(--log-muted);
+}
+
+.work__note a,
+.work__vps a{
+    color: var(--log-hash);
+}
+
+.work__vps{
+    gap: 1em;
+    margin-top: 1em;
+    border-style: dashed;
+}
+
+.work__soon{
+    padding: 0.15em 0.7em;
+    border: 1px solid var(--log-accent);
+    border-radius: 99px;
+    color: var(--log-accent);
+    font-size: 0.8em;
+}
+
+.work__repos{
+    margin-top: 1em;
+    list-style: none;
+}
+
+/* cada repo como una línea de ls -l: nombre, lenguaje, estrellas, fecha y descripción debajo */
+.work__repo{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 9em 4em 8em;
+    gap: 0.2em 1.2em;
+    padding: 0.6em 0;
+    border-bottom: 1px solid var(--log-line);
+}
+
+.work .work__repo__name{
+    color: var(--log-hash);
+}
+
+.work__repo__lang,
+.work__repo__stars,
+.work__repo__date{
+    color: var(--log-muted);
+}
+
+.work__repo__desc{
+    grid-column: 1 / -1;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
 .lightbox{
     width: 100vw;
     height: 100vh;
@@ -850,5 +989,16 @@ img{
 
     .footer{
         padding: 48px 16px;
+    }
+}
+
+@media (max-width: 640px){
+    .work__repo{
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .work__repo__lang,
+    .work__repo__date{
+        display: none;
     }
 }

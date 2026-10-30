@@ -1,31 +1,8 @@
 ---
-const projects = [
-	{
-		name: "Alfajor",
-		author: "Salvador Donayre",
-		description: "Hack de ViaVersion para interceptar packet mappers en Minecraft",
-	},
-	{
-		name: "Frozen Bubble SDL2",
-		author: "Angel Mattos",
-		description: "Un port no oficial de Frozen Bubble en SLD2",
-	},
-	{
-		name: "GEMU",
-		author: "Jose Daniel Grayson",
-		description: "Un emulador de Game Boy escrito en C",
-	},
-	{
-		name: "Space Pong",
-		author: "Jose Daniel Grayson",
-		description: "Un juego simple de Pong para la NES",
-	},
-	{
-		name: "Space Invaders",
-		author: "Jose Daniel Grayson",
-		description: "Emulador de Space Invaders escrito en Rust",
-	},
-];
+import { getCollection } from "astro:content";
+
+// los mismos proyectos de miembros que /projects (awesome-utec)
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order).slice(0, 5);
 
 const prompt = "Danee@fedora-desktop:~$";
 ---
@@ -38,10 +15,10 @@ const prompt = "Danee@fedora-desktop:~$";
 			{projects.map((project) => (
 				<li class="projects__item">
 					<div class="projects__item__header">
-						<span class="projects__item__name">{project.name}</span>
-						<span class="projects__item__author">{project.author}</span>
+						<a class="projects__item__name" href={project.data.url}>{project.data.name}</a>
+						<span class="projects__item__author">{project.data.authors.join(", ")}</span>
 					</div>
-					<p class="projects__item__desc">{project.description}</p>
+					<p class="projects__item__desc">{project.data.summary}</p>
 				</li>
 			))}
 		</ul>
