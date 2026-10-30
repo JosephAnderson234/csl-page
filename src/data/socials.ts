@@ -1,4 +1,4 @@
-// TODO: reemplazar los "#" por los links reales del club
+// links de redes del club, usados en el hero y el footer
 export const socials = [
   { name: "Discord", icon: "discord", href: "https://discord.gg/PU77KEXkzw" },
   {

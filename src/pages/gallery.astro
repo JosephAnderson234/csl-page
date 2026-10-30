@@ -1,0 +1,97 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+// la galería sale de las fotos de cada evento (src/content/events)
+const albums = (await getCollection("events"))
+	.filter((event) => event.data.photos.length > 0)
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const photoCount = albums.reduce((n, album) => n + album.data.photos.length, 0);
+
+const fmt = (date: Date) =>
+	date.toLocaleDateString("es-PE", { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" });
+---
+
+<Layout title="Galería · CSL Club">
+	<section class="log gallery">
+		<div class="log__intro">
+			<p class="log__prompt">csl@utec:~/galeria$ ls</p>
+			<h1 class="log__heading">Galería</h1>
+			<p class="log__lead">
+				{photoCount} fotos de {albums.length} eventos. Haz clic en una para verla en grande.
+			</p>
+		</div>
+
+		{albums.map((album) => (
+			<div class="gallery__album">
+				<div class="gallery__header">
+					<h2 class="gallery__name">{album.id}/</h2>
+					<span class="gallery__info">
+						{album.data.title} · {fmt(album.data.date)} · {album.data.photos.length} fotos
+					</span>
+					<a class="gallery__event" href={`/events#${album.id}`}>ver evento →</a>
+				</div>
+
+				<div class="gallery__grid">
+					{album.data.photos.map((photo) => (
+						<button class="gallery__item" type="button" data-src={photo.src} data-caption={`${album.data.title}: ${photo.alt}`}>
+							<img src={photo.src} alt={photo.alt} loading="lazy" />
+						</button>
+					))}
+				</div>
+			</div>
+		))}
+
+		<p class="log__prompt log__prompt--end">
+			csl@utec:~/galeria$ <span class="projects__cursor"></span>
+		</p>
+	</section>
+
+	<dialog class="lightbox" aria-label="Foto ampliada">
+		<button class="lightbox__btn lightbox__close" type="button" aria-label="Cerrar">✕</button>
+		<button class="lightbox__btn lightbox__prev" type="button" aria-label="Foto anterior">←</button>
+		<figure class="lightbox__figure">
+			<img class="lightbox__img" src="" alt="" />
+			<figcaption class="lightbox__caption"></figcaption>
+		</figure>
+		<button class="lightbox__btn lightbox__next" type="button" aria-label="Foto siguiente">→</button>
+	</dialog>
+</Layout>
+
+<script>
+	const items = [...document.querySelectorAll<HTMLButtonElement>(".gallery__item")];
+	const dialog = document.querySelector<HTMLDialogElement>(".lightbox")!;
+	const img = dialog.querySelector<HTMLImageElement>(".lightbox__img")!;
+	const caption = dialog.querySelector<HTMLElement>(".lightbox__caption")!;
+	let current = 0;
+
+	const show = (index: number) => {
+		current = (index + items.length) % items.length;
+		const item = items[current];
+		img.src = item.dataset.src!;
+		img.alt = item.querySelector("img")!.alt;
+		caption.textContent = item.dataset.caption!;
+	};
+
+	items.forEach((item, i) =>
+		item.addEventListener("click", () => {
+			show(i);
+			dialog.showModal();
+		}),
+	);
+
+	dialog.querySelector(".lightbox__close")!.addEventListener("click", () => dialog.close());
+	dialog.querySelector(".lightbox__prev")!.addEventListener("click", () => show(current - 1));
+	dialog.querySelector(".lightbox__next")!.addEventListener("click", () => show(current + 1));
+
+	dialog.addEventListener("keydown", (e) => {
+		if (e.key === "ArrowLeft") show(current - 1);
+		if (e.key === "ArrowRight") show(current + 1);
+	});
+
+	// clic fuera de la foto (en el fondo del diálogo) también cierra
+	dialog.addEventListener("click", (e) => {
+		if (e.target === dialog) dialog.close();
+	});
+</script>

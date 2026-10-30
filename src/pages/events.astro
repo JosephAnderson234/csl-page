@@ -1,0 +1,121 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+const today = new Date();
+today.setUTCHours(0, 0, 0, 0);
+
+const events = (await getCollection("events")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// hash corto estable a partir del id del archivo, para que parezca un commit
+const shortHash = (text: string) => {
+	let h = 5381;
+	for (const ch of text) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0;
+	return h.toString(16).padStart(8, "0").slice(0, 7);
+};
+
+const fmt = (date: Date, opts: Intl.DateTimeFormatOptions) =>
+	date.toLocaleDateString("es-PE", { timeZone: "UTC", ...opts });
+
+const formatRange = (start: Date, end?: Date) => {
+	if (!end) return fmt(start, { day: "numeric", month: "short", year: "numeric" });
+	return `${fmt(start, { day: "numeric" })}–${fmt(end, { day: "numeric", month: "short", year: "numeric" })}`;
+};
+
+const entries = await Promise.all(
+	events.map(async (event, i) => {
+		const { Content } = await render(event);
+		const upcoming = (event.data.endDate ?? event.data.date) >= today;
+		const firstOfCycle = events[i - 1]?.data.cycle !== event.data.cycle;
+		return { event, Content, upcoming, firstOfCycle, hash: shortHash(event.id) };
+	}),
+);
+---
+
+<Layout title="Eventos · CSL Club">
+	<section class="log">
+		<div class="log__intro">
+			<p class="log__prompt">csl@utec:~/eventos$ git log --graph</p>
+			<h1 class="log__heading">Eventos</h1>
+			<p class="log__lead">
+				Todo lo que hemos organizado y acompañado, del más reciente al primero.
+				Abre un commit para ver los detalles.
+			</p>
+		</div>
+
+		<ol class="log__list">
+			{entries.map(({ event, Content, upcoming, firstOfCycle, hash }) => (
+				<li id={event.id} class:list={["log__entry", { "log__entry--upcoming": upcoming }]}>
+					<details open={upcoming}>
+						<summary class="log__summary">
+							<span class="log__node" aria-hidden="true">*</span>
+							<span class="log__hash">{hash}</span>
+							{(upcoming || firstOfCycle) && (
+								<span class="log__refs">
+									({[upcoming && "HEAD -> próximo", firstOfCycle && `tag: ${event.data.cycle}`].filter(Boolean).join(", ")})
+								</span>
+							)}
+							<span class="log__title">{event.data.title}</span>
+							<time class="log__date" datetime={event.data.date.toISOString().slice(0, 10)}>
+								{formatRange(event.data.date, event.data.endDate)}
+							</time>
+						</summary>
+
+						<div class="log__body">
+							<dl class="log__meta">
+								<dt>Lugar:</dt>
+								<dd>{event.data.location}</dd>
+								{event.data.attendees && (
+									<>
+										<dt>Asistentes:</dt>
+										<dd>{event.data.attendees}</dd>
+									</>
+								)}
+								{event.data.partners.length > 0 && (
+									<>
+										<dt>Con:</dt>
+										<dd>{event.data.partners.join(", ")}</dd>
+									</>
+								)}
+							</dl>
+
+							<div class="log__desc">
+								<Content />
+							</div>
+
+							{event.data.talks.length > 0 && (
+								<ul class="log__talks">
+									{event.data.talks.map((talk) => <li>{talk}</li>)}
+								</ul>
+							)}
+
+							{event.data.photos.length > 0 && (
+								<div class="log__photos">
+									{event.data.photos.map((photo) => (
+										<img src={photo.src} alt={photo.alt} loading="lazy" />
+									))}
+								</div>
+							)}
+
+							{event.data.link && (
+								<a class="log__link" href={event.data.link} target="_blank" rel="noopener noreferrer">
+									Ver publicación ↗
+								</a>
+							)}
+						</div>
+					</details>
+				</li>
+			))}
+		</ol>
+
+		<p class="log__prompt log__prompt--end">
+			csl@utec:~/eventos$ <span class="projects__cursor"></span>
+		</p>
+	</section>
+</Layout>
+
+<script>
+	// si se llega con #id-del-evento (por ejemplo desde la galería), abre ese commit
+	const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+	target?.querySelector("details")?.setAttribute("open", "");
+</script>
