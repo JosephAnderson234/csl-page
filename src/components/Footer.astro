@@ -1,0 +1,17 @@
+---
+import SocialIcon from "./SocialIcon.astro";
+import { socials } from "../data/socials";
+---
+
+<footer class="footer">
+	<img class="footer__logo" src="/images/CSL_icon.png" alt="Logo del CSL" />
+	<p>Club de Software Libre @ UTEC</p>
+	<a class="footer__mail" href="mailto:csl@utec.edu.pe">csl@utec.edu.pe</a>
+	<div class="footer__socials">
+		{socials.map((social) => (
+			<a href={social.href} aria-label={social.name} target="_blank" rel="noopener noreferrer">
+				<SocialIcon name={social.icon} />
+			</a>
+		))}
+	</div>
+</footer>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+	<rect width="800" height="600" fill="#1C1E38" />
+	<g fill="none" stroke="#5A5F8A" stroke-width="12" stroke-linejoin="round">
+		<rect x="300" y="200" width="200" height="150" rx="12" />
+		<path d="M300 320l60-60 50 50 30-30 60 60" />
+	</g>
+	<circle cx="455" cy="240" r="16" fill="#5A5F8A" />
+	<text x="400" y="410" fill="#8A8FB8" font-family="sans-serif" font-size="28" text-anchor="middle">Imagen referencial</text>
+</svg>

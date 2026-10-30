@@ -1,0 +1,34 @@
+---
+import Stars from "./Stars.astro";
+import SocialIcon from "./SocialIcon.astro";
+import { socials } from "../data/socials";
+---
+
+<section class="hero">
+	<Stars />
+
+	<div class="hero__content">
+		<h1 class="hero__title">Club de Software Libre @ UTEC</h1>
+		<p class="hero__subtitle">Comunidad de Desarrolladores y Software Libre</p>
+		<p class="hero__description">
+			En CSL, reunimos a estudiantes con ganas de aprender, crear, y colaborar.
+			Trabajamos en proyectos open source, organizamos actividades y eventos, y
+			nos gusta Linux ;)
+		</p>
+
+		<div class="hero__socials">
+			{socials.map((social) => (
+				<a href={social.href} class="hero__socials__button" target="_blank" rel="noopener noreferrer">
+					<SocialIcon name={social.icon} />
+					{social.name}
+				</a>
+			))}
+		</div>
+	</div>
+
+	<img class="hero__penguin hero__penguin--left" src="/images/penguins/left.svg" alt="" />
+	<img class="hero__penguin hero__penguin--big" src="/images/penguins/big.svg" alt="" />
+	<img class="hero__penguin hero__penguin--small" src="/images/penguins/small.svg" alt="" />
+
+	<img class="hero__wave" src="/images/wave-hero.svg" alt="" />
+</section>

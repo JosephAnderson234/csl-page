@@ -1,0 +1,68 @@
+---
+const projects = [
+	{
+		name: "Alfajor",
+		author: "Salvador Donayre",
+		description: "Hack de ViaVersion para interceptar packet mappers en Minecraft",
+	},
+	{
+		name: "Frozen Bubble SDL2",
+		author: "Angel Mattos",
+		description: "Un port no oficial de Frozen Bubble en SLD2",
+	},
+	{
+		name: "GEMU",
+		author: "Jose Daniel Grayson",
+		description: "Un emulador de Game Boy escrito en C",
+	},
+	{
+		name: "Space Pong",
+		author: "Jose Daniel Grayson",
+		description: "Un juego simple de Pong para la NES",
+	},
+	{
+		name: "Space Invaders",
+		author: "Jose Daniel Grayson",
+		description: "Emulador de Space Invaders escrito en Rust",
+	},
+];
+
+const prompt = "Danee@fedora-desktop:~$";
+---
+
+<section class="projects">
+	<img class="projects__wave" src="/images/wave-projects.svg" alt="" />
+
+	<div class="projects__content">
+		<ul class="projects__list">
+			{projects.map((project) => (
+				<li class="projects__item">
+					<div class="projects__item__header">
+						<span class="projects__item__name">{project.name}</span>
+						<span class="projects__item__author">{project.author}</span>
+					</div>
+					<p class="projects__item__desc">{project.description}</p>
+				</li>
+			))}
+		</ul>
+
+		<div class="projects__terminal">
+			<div class="projects__terminal__controls" aria-hidden="true">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16" /></svg>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="5" width="14" height="14" /></svg>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 5l14 14M19 5L5 19" /></svg>
+			</div>
+
+			<h2 class="projects__title">Ahora imagina un buen título para esta sección.</h2>
+
+			<p class="projects__prompt">{prompt} cat projects.txt</p>
+			<p class="projects__text">
+				Este es un parrafo piola que habla sobre los proyectos. Deberia tener
+				aprox dos bloques de texto que hablen sobre el tipo de proyectos que
+				hacemos y como se desarrollan.
+			</p>
+			<p class="projects__text">Ah y se me murieron las tildes</p>
+			<p class="projects__prompt">{prompt} <span class="projects__cursor"></span></p>
+		</div>
+	</div>
+</section>
