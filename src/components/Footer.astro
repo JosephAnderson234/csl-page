@@ -1,17 +1,54 @@
 ---
 import SocialIcon from "./SocialIcon.astro";
 import { socials } from "../data/socials";
+
+const pages = [
+	{ name: "Eventos", href: "/events" },
+	{ name: "Proyectos", href: "/projects" },
+	{ name: "Galería", href: "/gallery" },
+];
+
+const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-	<img class="footer__logo" src="/images/CSL_icon.png" alt="Logo del CSL" />
-	<p>Club de Software Libre @ UTEC</p>
-	<a class="footer__mail" href="mailto:csl@utec.edu.pe">csl@utec.edu.pe</a>
-	<div class="footer__socials">
-		{socials.map((social) => (
-			<a href={social.href} aria-label={social.name} target="_blank" rel="noopener noreferrer">
-				<SocialIcon name={social.icon} />
-			</a>
-		))}
+	<div class="footer__top">
+		<div class="footer__brand">
+			<img class="footer__logo" src="/images/CSL_icon.png" alt="Logo del CSL" />
+			<p>Club de Software Libre @ UTEC</p>
+			<a class="footer__mail" href="mailto:csl@utec.edu.pe">csl@utec.edu.pe</a>
+			<div class="footer__socials">
+				{socials.map((social) => (
+					<a href={social.href} aria-label={social.name} target="_blank" rel="noopener noreferrer">
+						<SocialIcon name={social.icon} />
+					</a>
+				))}
+			</div>
+		</div>
+
+		<nav class="footer__col" aria-label="Sitio">
+			<p class="footer__heading">Sitio</p>
+			{pages.map((page) => <a href={page.href}>{page.name}</a>)}
+		</nav>
+
+		<nav class="footer__col" aria-label="Comunidad">
+			<p class="footer__heading">Comunidad</p>
+			{socials.map((social) => (
+				<a href={social.href} target="_blank" rel="noopener noreferrer">{social.name}</a>
+			))}
+		</nav>
+	</div>
+
+	<div class="footer__bottom">
+		<p>
+			Esta web también es software libre (GPL-3.0): mejórala en{" "}
+			<a href="https://github.com/csl-club/csl-page" target="_blank" rel="noopener noreferrer">GitHub</a>.
+      {" "} Aceptamos PR's :p
+    </p>
+		<p>
+			Puedes{" "}
+			<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener noreferrer">compartir</a>{" "}
+			nuestros textos, solo menciona al club · {year}
+		</p>
 	</div>
 </footer>

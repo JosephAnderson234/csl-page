@@ -394,27 +394,105 @@ img{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5vw;
+    gap: clamp(40px, 4vw, 80px);
     padding: clamp(64px, 8vw, 160px) 16px clamp(80px, 10vw, 200px);
     background: linear-gradient(180deg, var(--projects-bg) 27%, var(--manifesto-gradient-end) 100%);
     font-family: var(--font-mono);
     letter-spacing: var(--mono-spacing);
-    text-align: center;
+    font-size: var(--fs-body);
 }
 
-.manifesto__text{
-    max-width: 34em;
-    font-size: var(--fs-body);
-    line-height: 1.15;
+.manifesto__terminal{
+    width: min(100%, 52em);
+}
+
+.manifesto__prompt{
+    margin-bottom: 1.4em;
+    color: #E49BE4;
+}
+
+.manifesto__list{
+    display: flex;
+    flex-direction: column;
+    gap: 1.1em;
+}
+
+/* número + nombre a la izquierda, explicación a la derecha */
+.manifesto__item{
+    display: grid;
+    grid-template-columns: 9em 1fr;
+    gap: 0.3em 1.5em;
+    align-items: baseline;
+}
+
+.manifesto__item dt{
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.manifesto__n{
+    display: inline-block;
+    width: 1.6em;
+    color: var(--author);
+}
+
+.manifesto__item dd{
+    line-height: 1.4;
+    opacity: 0.85;
 }
 
 .manifesto__title{
+    max-width: 22em;
     font-weight: 400;
     font-size: var(--fs-heading);
+    line-height: 1.2;
+    text-align: center;
 }
 
-.manifesto__note{
-    font-size: var(--fs-body);
+.manifesto__join{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2em;
+    text-align: center;
+}
+
+.manifesto__actions{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.manifesto__button{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.4em 0.75em;
+    border: 1px solid var(--button-bg);
+    border-radius: 6px;
+    background-color: var(--button-bg);
+    color: var(--solid-section);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: var(--fs-nav);
+    font-weight: 500;
+    letter-spacing: normal;
+    transition: transform 0.15s ease;
+}
+
+.manifesto__button:hover{
+    transform: translateX(3px);
+}
+
+.manifesto__button svg{
+    width: 0.8em;
+    height: 0.8em;
+}
+
+.manifesto__button--ghost{
+    background-color: transparent;
+    color: var(--text-primary);
 }
 
 /* ---------- página de eventos (git log) ---------- */
@@ -880,12 +958,29 @@ img{
 .footer{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 6.56vw var(--side);
+    gap: clamp(32px, 3vw, 56px);
+    padding: 6.56vw var(--side) clamp(24px, 2vw, 40px);
     font-family: var(--font-mono);
     font-size: clamp(0.85rem, 0.83vw, 1rem);
     color: #FFFFFF;
+}
+
+.footer a{
+    color: inherit;
+    text-underline-offset: 0.2em;
+}
+
+.footer__top{
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 32px clamp(48px, 8vw, 160px);
+}
+
+.footer__brand{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
 }
 
 .footer__logo{
@@ -895,7 +990,6 @@ img{
 }
 
 .footer__mail{
-    color: inherit;
     text-decoration: none;
 }
 
@@ -914,7 +1008,36 @@ img{
     height: 30px;
 }
 
-/* ---------- responsive ---------- */
+.footer__col{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer__col a{
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.footer__col a:hover{
+    text-decoration: underline;
+    opacity: 1;
+}
+
+.footer__heading{
+    margin-bottom: 4px;
+    color: #7D84AE;
+}
+
+.footer__bottom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(201, 206, 234, 0.15);
+    color: #7D84AE;
+}
 
 @media (max-width: 900px){
     .events,
@@ -1000,5 +1123,19 @@ img{
     .work__repo__lang,
     .work__repo__date{
         display: none;
+    }
+}
+
+@media (max-width: 640px){
+    .manifesto__item{
+        grid-template-columns: 1fr;
+    }
+
+    .footer__top{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer__brand{
+        grid-column: 1 / -1;
     }
 }

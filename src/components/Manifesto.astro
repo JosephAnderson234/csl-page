@@ -1,9 +1,48 @@
+---
+import { socials } from "../data/socials";
+
+// las cuatro libertades del software libre, cada una con lo que el club hace al respecto
+const freedoms = [
+	{ n: 0, name: "usar", text: "Instala, prueba, rompe. Linux y herramientas libres en cada evento." },
+	{ n: 1, name: "estudiar", text: "Abre el código y entiende cómo funciona. Para eso son las charlas y talleres." },
+	{ n: 2, name: "compartir", text: "Lo que aprendes, lo enseñas: ponencias, guías y awesome-utec." },
+	{ n: 3, name: "mejorar", text: "Haz un fork, manda un PR. Así crecen los proyectos de miembros y del club." },
+];
+
+const discord = socials.find((social) => social.icon === "discord")!;
+const github = socials.find((social) => social.icon === "github")!;
+---
+
 <section class="manifesto">
-	<p class="manifesto__text">
-		Aquí las ideas se convierten en proyectos. Sean videojuegos, emuladores,
-		herramientas, o hardware, siempre hay espacio para aprender, colaborar y
-		construir algo de lo que puedas sentirte orgulloso.
-	</p>
-	<h2 class="manifesto__title">Software libre, proyectos libres.</h2>
-	<p class="manifesto__note">que cliche dios mio</p>
+	<div class="manifesto__terminal">
+		<p class="manifesto__prompt">csl@utec:~$ cat LIBERTADES</p>
+		<dl class="manifesto__list">
+			{freedoms.map((freedom) => (
+				<div class="manifesto__item">
+					<dt>
+						<span class="manifesto__n">{freedom.n}</span>
+						{freedom.name}
+					</dt>
+					<dd>{freedom.text}</dd>
+				</div>
+			))}
+		</dl>
+	</div>
+
+	<h2 class="manifesto__title">Libre como en libertad, no como en gratis.</h2>
+
+	<div class="manifesto__join">
+		<p class="manifesto__text">No necesitas experiencia, solo curiosidad.</p>
+		<div class="manifesto__actions">
+			<a class="manifesto__button" href={discord.href} target="_blank" rel="noopener noreferrer">
+				Únete al Discord
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M5 12h14M13 6l6 6-6 6" />
+				</svg>
+			</a>
+			<a class="manifesto__button manifesto__button--ghost" href={github.href} target="_blank" rel="noopener noreferrer">
+				Ver en GitHub
+			</a>
+		</div>
+	</div>
 </section>
